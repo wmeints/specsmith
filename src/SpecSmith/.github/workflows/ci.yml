@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "tests/**"
+      - ".github/workflows/**"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "tests/**"
+      - ".github/workflows/**"
+
+jobs:
+  build:
+    name: Build and test
+    runs_on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build solution
+        run: dotnet build --configuration Release --no-restore
+      - name: Run tests
+        run: dotnet test --no-build --no-restore --configuration Release
+      - name: Publish binaries
+        run: dotnet publish src/SpecSmith/SpecSmith.csproj --no-build --no-restore -o dist/
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: application
+          path: dist
