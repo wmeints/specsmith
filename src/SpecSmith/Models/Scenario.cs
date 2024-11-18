@@ -1,10 +1,10 @@
 namespace SpecSmith.Models;
 
-public class Feature
+public class Scenario
 {
     public int Id { get; set; }
-    public required Project Project { get; set; }
     public required string Title { get; set; }
     public required string Description { get; set; }
-    public List<Scenario> Scenarios { get; set; } = new();
+    public required Feature Feature { get; set; }
+    public List<Step> Steps { get; set; } = new();
 }
