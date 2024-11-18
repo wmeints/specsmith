@@ -19,7 +19,7 @@ on:
 jobs:
   build:
     name: Build and test
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
