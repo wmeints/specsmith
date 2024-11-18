@@ -1,6 +1,11 @@
 using SpecSmith.Components;
+using SpecSmith.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
+
+builder.AddNpgsqlDbContext<ApplicationDbContext>("applicationDatabase");
 
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
@@ -10,5 +15,6 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
+app.MapDefaultEndpoints();
 
 app.Run();
