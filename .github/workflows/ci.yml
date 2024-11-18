@@ -37,8 +37,18 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
-      - name: Restore dependencies
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: src/SpecSmith/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('src/SpecSmith/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Restore .NET dependencies
         run: dotnet restore
+      - name: Restore node dependencies
+        working-directory: src/SpecSmith
+        run: npm install
       - name: Build solution
         run: dotnet build --configuration Release --no-restore
       - name: Run tests
