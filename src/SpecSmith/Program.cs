@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 using SpecSmith.Components;
 using SpecSmith.Data;
 
@@ -16,5 +18,10 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 app.MapDefaultEndpoints();
+
+using var scope = app.Services.CreateScope();
+var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+await dbContext.Database.MigrateAsync();
 
 app.Run();
